@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#This script is to run all 5 datasets using dbNSFP database search command. 
+#This script is to test the dbNSFP database search command. 
 
 #testing
 cd /home/mfischer10/vep_project/mydbNSFP/dbNSFP5.2a
