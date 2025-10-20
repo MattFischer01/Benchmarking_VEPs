@@ -1,0 +1,2 @@
+#I want to focus on certain columns at the moment, 1-7, 25-30, 58-60, 64-69, 76-81, 105-107, 112-113, 120 -122
+#Here i will focus on the rank score for each score, from 0 to 1. A rank score of 0.9 means the top 10% most damaging. I will consider anything 70% or greater as pathogenic (in which the truth is 1) and anything less than 70% as benign (in which the truth is -1). I will first determine how many missingness is there for each model between the variants. 
