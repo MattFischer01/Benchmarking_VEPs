@@ -1,0 +1,31 @@
+Searching based on hg19 coordinates:
+	Searching chr1
+	Searching chr10
+	Searching chr11
+	Searching chr12
+	Searching chr13
+	Searching chr14
+	Searching chr15
+	Searching chr16
+	Searching chr17
+	Searching chr18
+	Searching chr19
+	Searching chr2
+	Searching chr20
+	Searching chr21
+	Searching chr22
+	Searching chr3
+	Searching chr4
+	Searching chr5
+	Searching chr6
+	Searching chr7
+	Searching chr8
+	Searching chr9
+	Searching chrM
+	Searching chrX
+	Searching chrY
+
+4 SNP(s) are found. Written to /home/mfischer10/vep_project/mydbNSFP/dbNSFP5.2a/tryhg19.out
+5 SNP(s) are not found. Written to /home/mfischer10/vep_project/mydbNSFP/dbNSFP5.2a/tryhg19.out.err
+1 position(s) are found. Written to /home/mfischer10/vep_project/mydbNSFP/dbNSFP5.2a/tryhg19.out
+7 gene(s) are found. Written to /home/mfischer10/vep_project/mydbNSFP/dbNSFP5.2a/tryhg19.out

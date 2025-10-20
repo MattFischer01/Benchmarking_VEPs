@@ -1,0 +1,23 @@
+	Command being timed: "java -cp . search_dbNSFP52a -i /home/mfischer10/vep_project/mydbNSFP/dbNSFP5.2a/tryhg19.in -o /home/mfischer10/vep_project/mydbNSFP/dbNSFP5.2a/tryhg19.out -v hg19 -w 1-7,12-18,37-155,533-543"
+	User time (seconds): 4310.93
+	System time (seconds): 82.46
+	Percent of CPU this job got: 100%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 1:13:12
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 6093580
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 30125822
+	Voluntary context switches: 505805
+	Involuntary context switches: 36407
+	Swaps: 0
+	File system inputs: 66361752
+	File system outputs: 61384
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
