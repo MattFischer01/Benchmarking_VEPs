@@ -8,14 +8,14 @@ library(dplyr)
 library(data.table)
 
 # name this dataset (change this to run the script for another dataset)
-dataset_name <- "exovar_filtered"   # e.g. "dataset", "dataset2", "dataset3", ...
+dataset_name <- "predictSNP"   # e.g. "dataset", "dataset2", "dataset3", ...
 
 # convenience paths that use dataset_name
 scores_in <- file.path("/home/mfischer10/vep_project/testing_sets/dbnsfp_format/output",
-                       paste0(dataset_name, "_tool_scores.out"))
+                       paste0(dataset_name, "_selected_tool_scores.out"))
 truth_in  <- file.path("/home/mfischer10/vep_project/testing_sets",
-                       paste0(dataset_name, "_tool_scores.csv"))
-out_dir   <- "/home/mfischer10/vep_project/Benchmarking_VEPs/output/"
+                       paste0(dataset_name, "_selected_tool_scores_V2.csv"))
+out_dir   <- paste0("/home/mfischer10/vep_project/Benchmarking_VEPs/output/", dataset_name)
 
 # read files using dataset_name
 dataset <- fread(scores_in, sep = '\t', header = TRUE, na.strings = ".") %>%
@@ -50,6 +50,8 @@ fwrite(missing_summary,
 
 truth <- fread(truth_in, sep = ',', header = TRUE) %>% select(1,3,4,5 ,6)
 
+truth$hg19_chr <- gsub("chr", "", truth$hg19_chr)
+
 
 colnames(dataset)
 colnames(truth) <- c("truth", "hg19_chr", "hg19_pos(1-based)", "ref", "alt")
@@ -68,12 +70,6 @@ table(dataset_truth$truth, useNA = "ifany")
 rank_cols_in_merged <- intersect(rank_cols, names(dataset_truth))
 sapply(rank_cols_in_merged, function(col) sum(!is.na(dataset_truth[[col]])))
 
-# sample non-missing rows for a specific problematic column (replace COLNAME)
-COL <- rank_cols_in_merged[6]
-rows <- which(!is.na(dataset_truth[[COL]]))
-head(dataset_truth[rows, c("truth", COL)], 10)
-
-# Now dataset_truth contains both the tool scores and the truth labels
 
 # -----------------------------
 # Threshold sweep for rankscore columns
@@ -189,13 +185,13 @@ auc_per_model <- metrics_df %>%
 # save this dataset's AUCs (optional)
 write.csv(auc_per_model,
           file = file.path("/home/mfischer10/vep_project/Benchmarking_VEPs/output/",
-                           paste0("auc_per_model_", dataset_name, ".csv")),
+                           paste0(dataset_name, "/auc_per_model_", dataset_name, ".csv")),
           row.names = FALSE)
 
 # ---- After you have run this for all 5 datasets ----
 # Read them and combine; or if you created them in-memory, just rbind them.
 # Example reading saved CSVs:
-dataset_files <- list.files("/home/mfischer10/vep_project/Benchmarking_VEPs",
+dataset_files <- list.files("/home/mfischer10/vep_project/Benchmarking_VEPs/output/*/",
                             pattern = "^auc_per_model_.*\\.csv$", full.names = TRUE)
 all_metrics <- do.call(rbind, lapply(dataset_files, fread))  # requires data.table::fread
 # ensure columns names consistent
