@@ -8,13 +8,13 @@ library(dplyr)
 library(data.table)
 
 # name this dataset (change this to run the script for another dataset)
-dataset_name <- "predictSNP"   # e.g. "dataset", "dataset2", "dataset3", ...
+dataset_name <- "varibench"   # e.g. "dataset", "dataset2", "dataset3", ...
 
 # convenience paths that use dataset_name
 scores_in <- file.path("/home/mfischer10/vep_project/testing_sets/dbnsfp_format/output",
                        paste0(dataset_name, "_selected_tool_scores.out"))
 truth_in  <- file.path("/home/mfischer10/vep_project/testing_sets",
-                       paste0(dataset_name, "_selected_tool_scores_V2.csv"))
+                       paste0(dataset_name, "_selected_tool_scores.csv"))
 out_dir   <- paste0("/home/mfischer10/vep_project/Benchmarking_VEPs/output/", dataset_name)
 
 # read files using dataset_name
@@ -50,11 +50,12 @@ fwrite(missing_summary,
 
 truth <- fread(truth_in, sep = ',', header = TRUE) %>% select(1,3,4,5 ,6)
 
-truth$hg19_chr <- gsub("chr", "", truth$hg19_chr)
 
 
 colnames(dataset)
 colnames(truth) <- c("truth", "hg19_chr", "hg19_pos(1-based)", "ref", "alt")
+
+#truth$hg19_chr <- sub("^chr", "", as.character(truth$hg19_chr), ignore.case = TRUE)
 
 dataset_truth <- dataset %>% inner_join(truth, by = c("hg19_chr", "hg19_pos(1-based)", "ref", "alt"))
 
@@ -151,9 +152,6 @@ best_out <- file.path(out_dir, paste0("best_thresholds_by_mcc_", dataset_name, "
 write.csv(as.data.frame(best_by_mcc), best_out, row.names = FALSE)
 message("Best thresholds (by MCC) saved to: ", best_out)
 
-str(metrics_df)
-unique(metrics_df$threshold)
-table(metrics_df$threshold)
 
 metrics_thrs <- metrics_df %>% filter(dplyr::near(threshold, 0.6)) %>%
   arrange(desc(auc))
@@ -191,8 +189,8 @@ write.csv(auc_per_model,
 # ---- After you have run this for all 5 datasets ----
 # Read them and combine; or if you created them in-memory, just rbind them.
 # Example reading saved CSVs:
-dataset_files <- list.files("/home/mfischer10/vep_project/Benchmarking_VEPs/output/*/",
-                            pattern = "^auc_per_model_.*\\.csv$", full.names = TRUE)
+dataset_files <- Sys.glob("/home/mfischer10/vep_project/Benchmarking_VEPs/output/*/auc_per_model_*.csv")
+
 all_metrics <- do.call(rbind, lapply(dataset_files, fread))  # requires data.table::fread
 # ensure columns names consistent
 all_metrics <- as.data.frame(all_metrics)
@@ -205,12 +203,12 @@ p <- ggplot(all_metrics, aes(x = dataset, y = auc, fill = column)) +
   scale_y_continuous(limits = c(0, 1), expand = c(0, 0)) +
   labs(x = "Dataset", y = "AUC", fill = "VEP model",
        title = "AUC by VEP model across datasets") +
-  theme_minimal() +
+  theme_bw() +
   theme(axis.text.x = element_text(angle = 30, hjust = 1),
         legend.position = "right")
 
 # Save and show
-ggsave("/home/mfischer10/vep_project/Benchmarking_VEPs/auc_by_model_by_dataset_barplot.png",
+ggsave("/home/mfischer10/vep_project/Benchmarking_VEPs/output/auc_by_model_by_dataset_barplot.png",
        p, width = 12, height = 6, dpi = 300)
 print(p)
 
@@ -224,7 +222,7 @@ p2 <- ggplot(all_metrics, aes(x = dataset, y = auc)) +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 30, hjust = 1))
 
-ggsave("/home/mfischer10/vep_project/Benchmarking_VEPs/auc_by_model_facets.png",
+ggsave("/home/mfischer10/vep_project/Benchmarking_VEPs/output/auc_by_model_facets.png",
        p2, width = 14, height = 10, dpi = 300)
 print(p2)
 
