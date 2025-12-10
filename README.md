@@ -1,7 +1,9 @@
 # Benchmarking_VEPs
 This project is to benchmark various varient effect predictor tools using dbNSFP database.
 
-To use dbNSFP, you must first register under your academic institutional email to receive an access code at https://www.dbnsfp.org/home, which will then allow you to download the database via wget. Downloading the database will also provide a Readme file, which discusses all possible input file formats allowed and showcases different usages and command line tags. To be able to run dbNSFP, you need to have Java installed on your machine. There are 647 columns containing a plethora of information, for clear output, it is important to pick which data you want to analyze using the -w tag. 
+To use dbNSFP, you must first register under your academic institutional email to receive an access code at https://www.dbnsfp.org/home, which will then allow you to download the database via wget. Downloading the database will also provide a Readme file (I have provided a copy: search_dbNSFP52a.readme.pdf), which discusses all possible input file formats allowed and showcases different usages and command line tags. To be able to run dbNSFP, you need to have Java installed on your machine. There are 647 columns containing a plethora of information, for clear output, it is important to pick which data you want to analyze using the -w tag.
+
+Datasets can be downloaded from https://structure.bmc.lu.se/VariBench/data/variationtype/substitutions/test/GrimmDatasets.php using wget. 
 
 The scripts below were used for running dbNSFP, parsing input and output, and creating figures for the report.
 
