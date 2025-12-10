@@ -12,7 +12,7 @@ This script was used to first test dbNSFP functionality, with the output logs sh
 This script was used to first format the input necessary to run dbNSFP.
 
 3. running_dbNSFP.sh:
-The code necessary to run dbNSFP search function with all 5 datasets.
+The code necessary to run dbNSFP search function with all 5 datasets. I have also provided the log files from running dbNSFP for each dataset to show what the outputs should look like if you were to run the database with the code I provided, these can be found under /output/dataset/
 
 4. evaluating_metrics.R: 
 After running dbNSFP, this code was used to pull the respective scores from SIFT4G, PrimateAI, AlphaMissense, REVEL, and MetaRNN, and evaluate the performance of the tools against the datasets' "truth". The code is used to compute the accuracy, precision, recall, specificity, F1-scores, and area under the receiver operating characteristic curves (AUC). 
