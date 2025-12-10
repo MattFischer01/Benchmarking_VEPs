@@ -64,6 +64,7 @@ for (dataset in datasets) {
   ))
 }
 
+#Clean up data for plotting and use factors to set ordering of datasets.
 time_data$dataset = c("humvar", "predictSNP", "swissvar", "varibench", "exovar")
 datasets <- c('humvar', 'predictSNP', 'swissvar', 'varibench', 'exovar')
 time_data$dataset <- factor(time_data$dataset, levels = datasets)

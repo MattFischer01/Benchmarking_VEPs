@@ -52,8 +52,6 @@ ggsave('/home/mfischer10/vep_project/Benchmarking_VEPs/output/auc_comparison_fac
 
 
 #Save summary statistics
-
-
 #which dataset had the highest auc overall?
 summary_stats <- combined_df %>%
   group_by(dataset, tool) %>%
@@ -78,7 +76,7 @@ tool_auc <- combined_df %>%
 
 print(tool_auc)
 
-#write summary file with cool sink function 
+#write summary file with sink function 
 summary_file <- '/home/mfischer10/vep_project/Benchmarking_VEPs/output/auc_comparison_summary.txt'
 sink(summary_file)
 

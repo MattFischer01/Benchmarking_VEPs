@@ -3,13 +3,13 @@
 
 install.packages("dplyr")
 install.packages("data.table")
-if (!requireNamespace("pROC", quietly = TRUE)) install.packages("pROC")
+install.packages("pROC")
 
 library(dplyr)
 library(data.table)
 library(pROC)
 
-#I will perform one dataset at a time 
+#run this code for each dataset. 
 dataset_name <- "varibench"  
 
 #paths to the dbNSFP output, the input, and the output for this script 
@@ -19,7 +19,7 @@ truth_in  <- file.path("/home/mfischer10/vep_project/testing_sets",
                        paste0(dataset_name, "_selected_tool_scores.csv"))
 out_dir   <- paste0("/home/mfischer10/vep_project/Benchmarking_VEPs/output/", dataset_name)
 
-#read files using dataset_name
+#read files using dataset_name and extract the needed rankscores for the each tool
 dataset <- fread(scores_in, sep = '\t', header = TRUE, na.strings = ".") %>%
   select(1:9,27:32,60:62,66:71,78:83,107:109,114:115,122:124)
 
@@ -32,10 +32,9 @@ dataset <- dataset %>% mutate(across(all_of(rank_cols), as.numeric))
 #Read in the datasets input
 truth <- fread(truth_in, sep = ',', header = TRUE) %>% select(1,3,4,5 ,6)
 
+#look at the colnames 
 colnames(dataset)
 colnames(truth) <- c("truth", "hg19_chr", "hg19_pos(1-based)", "ref", "alt")
-
-#truth$hg19_chr <- sub("^chr", "", as.character(truth$hg19_chr), ignore.case = TRUE)
 
 dataset_truth <- dataset %>% inner_join(truth, by = c("hg19_chr", "hg19_pos(1-based)", "ref", "alt"))
 
@@ -55,7 +54,7 @@ thresholds <- seq(0.4, 0.9, by = 0.1)
 #rankscore columns present in the merged data
 rank_cols_in_merged <- intersect(rank_cols, names(dataset_truth))
 
-safe_metrics <- function(y_true_raw, y_score, thr) {
+metrics <- function(y_true_raw, y_score, thr) {
   #converting dataset truth to scores 0 and 1: pathogenic (1) -> 1, benign (-1) -> 0
   y_true <- ifelse(as.numeric(y_true_raw) == 1, 1, 0)
   keep <- !is.na(y_score) & !is.na(y_true)
@@ -76,7 +75,7 @@ safe_metrics <- function(y_true_raw, y_score, thr) {
   precision <- TP / (TP + FP) 
   f1 <- (2 * precision * sensitivity) / (precision + sensitivity) 
 
-  #calculate MCC
+  #calculate MCC, though, not used in reporting.
   TPn <- as.numeric(TP); TNn <- as.numeric(TN); FPn <- as.numeric(FP); FNn <- as.numeric(FN)
   mcc_denom <- sqrt((TPn + FPn) * (TPn + FNn) * (TNn + FPn) * (TNn + FNn))
   mcc <- (TPn * TNn - FPn * FNn) / mcc_denom
@@ -92,17 +91,17 @@ safe_metrics <- function(y_true_raw, y_score, thr) {
     mcc = mcc, auc = auc_val)
 }
 
-#results
+#run metrics for each tool and threshold. 
 results <- lapply(rank_cols_in_merged, function(col) {
   scores <- dataset_truth[[col]]
-  metrics_per_thr <- t(sapply(thresholds, function(thr) safe_metrics(dataset_truth$truth, scores, thr)))
+  metrics_per_thr <- t(sapply(thresholds, function(thr) metrics(dataset_truth$truth, scores, thr)))
   df <- as.data.frame(metrics_per_thr, stringsAsFactors = FALSE)
   df$threshold <- thresholds
   df$column <- col
-  # ensure numeric
+  #ensure numeric
   numc <- c("n","accuracy","sensitivity","specificity","precision","f1","mcc","auc","threshold")
   df[numc] <- lapply(df[numc], as.numeric)
-  # reorder
+  #reorder
   df <- df[, c("column","threshold", numc)]
   df
 })
@@ -115,8 +114,8 @@ metrics_df <- metrics_df[, c("column","threshold","n","accuracy","sensitivity","
 #save data 
 fwrite(metrics_df, file = file.path(out_dir, paste0("rankscore_metrics_threshold_sweep_", dataset_name, ".csv")))
 
-
-#what tool has the best auc?
+#Questions about the data:
+#what are the metrics for threshold 0.6?
 metrics_thrs <- metrics_df %>% filter(threshold == 0.6) %>% arrange(desc(auc))
 
 #write only the threshold-0.6 rows out

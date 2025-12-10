@@ -28,7 +28,7 @@ data_list <- list()
 for (dataset in datasets) {
   df <- fread(paste0('/home/mfischer10/vep_project/Benchmarking_VEPs/output/',
                      dataset, '/rankscore_metrics_threshold_sweep_', dataset, '.csv'), stringsAsFactors = FALSE)
-  #only pick the VEPs that I am reporting 
+  #only pick the 5 VEPs that I am reporting 
   df_filtered <- df %>%
     filter(column %in% tools) %>%
     mutate(dataset = dataset,
