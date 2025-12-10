@@ -31,7 +31,6 @@ Overall AUC by Dataset (averaged across all tools):
 4 varibench        0.767
 5 swissvar         0.763
 
-Dataset with highest overall AUC: humvar with AUC = 0.9292 
 
 
 Overall AUC by Tool (averaged across all datasets):
@@ -45,7 +44,6 @@ Overall AUC by Tool (averaged across all datasets):
 4 PrimateAI           0.775
 5 SIFT4G              0.758
 
-Tool with highest overall AUC: MetaRNN with AUC = 0.9277 
 
 
-Generated on: 2025-12-01 17:05:28.672713 
+

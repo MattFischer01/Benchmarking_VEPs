@@ -22,10 +22,9 @@
 ##"chr pos ref alt refaa altaa"
 
 #For this input format, I will need to extract fields 3,4,5,6 from my csv files, separated by commas, my input will be tab deliminated.
-mkdir ~/vep_project/testing_sets/dbnsfp_format
+#mkdir ~/vep_project/testing_sets/dbnsfp_format
 
 #This files are formatted in hg19 formatting
-
 
 #File 1: ExoVar, Deleterious Variants: 5156, Neutral Variants: 3694
 awk -F',' 'NR > 1 {OFS="\t"; print $3, $4, $5, $6, $13, $14}' ~/vep_project/testing_sets/exovar_filtered_tool_scores.csv > ~/vep_project/testing_sets/dbnsfp_format/exovar_filtered_tool_scores.tsv

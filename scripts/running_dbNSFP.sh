@@ -5,7 +5,7 @@
 #Running this script: nohup /home/mfischer10/vep_project/Benchmarking_VEPs/running_dbNSFP.sh &
 
 #Need to be in the correct path to run the program 
-cd /home/mfischer10/vep_project/mydbNSFP/dbNSFP5.2a
+#cd /home/mfischer10/vep_project/mydbNSFP/dbNSFP5.2a
 
 #exovar
 /usr/bin/time -v java -cp . search_dbNSFP52a \
